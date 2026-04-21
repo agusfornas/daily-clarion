@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Daily Clarion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --bg: #fafaf8; --ink: #1a1a1a; --ink-light: #4a4a4a; --ink-muted: #888; --accent: #1a56db; --rule: #d0cec8; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Source Serif 4', Georgia, serif; }
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+  .site-header { border-bottom: 3px double var(--rule); }
+  .header-top { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 2rem; border-bottom: 1px solid var(--rule); font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--ink-muted); letter-spacing: 0.05em; text-transform: uppercase; }
+  .masthead { text-align: center; padding: 1.2rem 2rem; border-bottom: 1px solid var(--rule); }
+  .masthead h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 6vw, 4.5rem); font-weight: 700; letter-spacing: -0.02em; }
+  .masthead .tagline { font-family: 'Inter', sans-serif; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); margin-top: 0.3rem; }
+  .section-nav { display: flex; gap: 1.8rem; padding: 0.6rem 2rem; font-family: 'Inter', sans-serif; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); overflow-x: auto; }
+  .section-nav span { cursor: pointer; white-space: nowrap; }
+  .section-nav .active { color: var(--accent); font-weight: 500; border-bottom: 2px solid var(--accent); padding-bottom: 0.2rem; }
+  .section-label { font-family: 'Inter', sans-serif; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 500; border-top: 2px solid var(--accent); padding-top: 0.5rem; margin-bottom: 1.2rem; }
+  .hero-section { padding: 2.5rem 0; border-bottom: 1px solid var(--rule); }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .hero-label { display: inline-block; background: var(--accent); color: white; font-family: 'Inter', sans-serif; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.5rem; margin-bottom: 0.9rem; }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); line-height: 1.15; font-weight: 700; margin-bottom: 0.8rem; }
+  .hero-deck { font-size: 1.05rem; line-height: 1.65; color: var(--ink-light); font-style: italic; margin-bottom: 1rem; font-weight: 300; }
+  .hero-byline { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--ink-muted); margin-bottom: 1.2rem; }
+  .hero-body p { font-size: 1rem; line-height: 1.8; margin-bottom: 0.8rem; }
+  .read-more-btn { display: inline-flex; align-items: center; gap: 0.4rem; font-family: 'Inter', sans-serif; font-size: 0.78rem; color: var(--accent); letter-spacing: 0.05em; cursor: pointer; margin-top: 0.5rem; font-weight: 500; }
+  .read-more-btn:hover { text-decoration: underline; }
+  .hero-image { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+  .secondary-section { padding: 2.5rem 0; border-bottom: 1px solid var(--rule); }
+  .secondary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .article-card { border-top: 1px solid var(--rule); padding-top: 1.2rem; cursor: pointer; }
+  .article-card:hover .article-title { color: var(--accent); }
+  .article-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; margin-bottom: 1rem; }
+  .article-label { font-family: 'Inter', sans-serif; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; font-weight: 500; }
+  .article-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; line-height: 1.3; font-weight: 600; margin-bottom: 0.5rem; transition: color 0.15s; }
+  .article-deck { font-size: 0.9rem; line-height: 1.6; color: var(--ink-light); font-style: italic; margin-bottom: 0.6rem; }
+  .article-byline { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: var(--ink-muted); }
+  footer { background: var(--ink); color: #aaa; padding: 2rem; text-align: center; font-family: 'Inter', sans-serif; font-size: 0.75rem; margin-top: 2rem; }
+  footer .footer-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: white; margin-bottom: 0.4rem; }
+  footer p { line-height: 1.8; }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; overflow-y: auto; padding: 2rem 1rem; }
+  .modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+  .modal-box { background: var(--bg); max-width: 720px; width: 100%; padding: 3rem; position: relative; margin: auto; }
+  .modal-close { position: absolute; top: 1.2rem; right: 1.5rem; font-size: 1.5rem; cursor: pointer; color: var(--ink-muted); background: none; border: none; }
+  .modal-label { font-family: 'Inter', sans-serif; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.8rem; font-weight: 500; }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2.2rem); line-height: 1.2; font-weight: 700; margin-bottom: 0.6rem; }
+  .modal-deck { font-size: 1.05rem; line-height: 1.65; color: var(--ink-light); font-style: italic; margin-bottom: 1rem; }
+  .modal-byline { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--ink-muted); margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--rule); }
+  .modal-body p { font-size: 1rem; line-height: 1.85; margin-bottom: 1rem; }
+  .modal-image { width: 100%; aspect-ratio: 16/9; object-fit: cover; margin-bottom: 1.5rem; }
+  @media (max-width: 768px) {
+    .container { padding: 0 1rem; }
+    .hero-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .secondary-grid { grid-template-columns: 1fr; }
+    .modal-box { padding: 1.5rem; }
+    .header-top { flex-direction: column; gap: 0.3rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-top">
+    <span>Tuesday, April 21, 2026</span>
+    <span>Technology &amp; Business Intelligence</span>
+    <span>Est. 2025</span>
+  </div>
+  <div class="masthead">
+    <h1>The Daily Clarion</h1>
+    <p class="tagline">Independent Technology Journalism &nbsp;·&nbsp; Analysis for the Discerning Professional</p>
+  </div>
+  <div class="section-nav">
+    <span class="active">Technology</span>
+    <span>Markets</span>
+    <span>AI &amp; Society</span>
+    <span>Startups</span>
+    <span>Policy</span>
+    <span>Commentary</span>
+  </div>
+</header>
+
+<main>
+<section class="hero-section">
+  <div class="container">
+    <p class="section-label">Lead Story</p>
+    <div class="hero-grid">
+      <div>
+        <span class="hero-label">Venture Capital</span>
+        <h2 class="hero-title">Cursor Pursues $2 Billion Round at $50 Billion Valuation, Redrawing the Map of Developer Tools</h2>
+        <p class="hero-deck">The AI coding platform, backed by Andreessen Horowitz and Nvidia, has grown from zero to $2 billion in annualised revenue in under three years — a trajectory that calls into question the conventional economics of software development.</p>
+        <p class="hero-byline">By The Daily Clarion Technology Desk &nbsp;·&nbsp; April 21, 2026</p>
+        <div class="hero-body">
+          <p>Cursor, the AI-native coding environment developed by Anysphere, is in advanced negotiations to raise $2 billion at a pre-money valuation exceeding $50 billion — a figure that would nearly double its valuation from just five months ago and place it firmly among the most valuable private technology companies in the world.</p>
+          <p>The round is being co-led by Thrive Capital and Andreessen Horowitz, with Nvidia participating as a strategic investor. Multiple sources confirm the round is already oversubscribed, reflecting the degree to which enterprise appetite for AI coding infrastructure has outpaced even the most optimistic projections from 2024.</p>
+        </div>
+        <span class="read-more-btn" onclick="openModal('modal-cursor')">Continue reading &#8594;</span>
+      </div>
+      <div>
+        <img class="hero-image" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80" alt="Developer coding" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="secondary-section">
+  <div class="container">
+    <p class="section-label">Technology &amp; Industry</p>
+    <div class="secondary-grid">
+      <article class="article-card" onclick="openModal('modal-meta')">
+        <img class="article-img" src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80" alt="AI interface" loading="lazy">
+        <p class="article-label">Artificial Intelligence</p>
+        <h3 class="article-title">Meta's Muse Spark Signals a Strategic Pivot Toward Proprietary AI</h3>
+        <p class="article-deck">In a departure from its open-source tradition, Meta released Muse Spark — a natively multimodal model built under Alexandr Wang's superintelligence unit.</p>
+        <p class="article-byline">April 8, 2026</p>
+      </article>
+      <article class="article-card" onclick="openModal('modal-deepseek')">
+        <img class="article-img" src="https://images.unsplash.com/photo-1620825937374-87fc7d6bddc2?w=800&q=80" alt="AI chip" loading="lazy">
+        <p class="article-label">Global AI Competition</p>
+        <h3 class="article-title">DeepSeek V4 Poised for Late-April Launch with One Trillion Parameters</h3>
+        <p class="article-deck">The Chinese laboratory's fourth model runs on Huawei silicon with open weights under Apache 2.0 — challenging the assumption that frontier AI requires Western chip infrastructure.</p>
+        <p class="article-byline">April 21, 2026</p>
+      </article>
+      <article class="article-card" onclick="openModal('modal-openai')">
+        <img class="article-img" src="https://images.unsplash.com/photo-1579389083078-4e7018379f7e?w=800&q=80" alt="Digital advertising" loading="lazy">
+        <p class="article-label">Business Model</p>
+        <h3 class="article-title">OpenAI's $100 Billion Advertising Ambition and What It Means for the Open Web</h3>
+        <p class="article-deck">OpenAI projects $2.5 billion in ad revenue for 2026, scaling to $100 billion annually by 2030 — larger than most major media conglomerates' total ad spend.</p>
+        <p class="article-byline">April 21, 2026</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="secondary-section">
+  <div class="container">
+    <p class="section-label">Markets &amp; Venture Capital</p>
+    <div style="max-width: 680px;">
+      <article class="article-card" onclick="openModal('modal-vc')">
+        <p class="article-label">Venture Capital</p>
+        <h3 class="article-title" style="font-size:1.6rem;">Q1 2026 Shatters Venture Records With $300 Billion Deployed — But the Spoils Flow Narrowly</h3>
+        <p class="article-deck" style="font-size:1rem;">Global venture funding hit an all-time quarterly record, driven almost entirely by AI infrastructure bets. PwC data shows 20% of companies are capturing 75% of AI's economic gains.</p>
+        <p class="article-byline">April 21, 2026 &nbsp;·&nbsp; Click to read full analysis</p>
+      </article>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p class="footer-name">The Daily Clarion</p>
+  <p>Independent technology journalism since 2025. Published daily.<br>All articles reflect editorial analysis of publicly available information.<br>© 2026 The Daily Clarion. All rights reserved.</p>
+</footer>
+
+<div id="modal-cursor" class="modal-overlay" onclick="closeOnOverlay(event,this)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-cursor')">&times;</button>
+    <p class="modal-label">Venture Capital &nbsp;·&nbsp; April 21, 2026</p>
+    <h2 class="modal-title">Cursor Pursues $2 Billion Round at $50 Billion Valuation, Redrawing the Map of Developer Tools</h2>
+    <p class="modal-deck">The AI coding platform has grown from zero to $2 billion in annualised revenue in under three years — calling into question the conventional economics of software development.</p>
+    <p class="modal-byline">By The Daily Clarion Technology Desk &nbsp;·&nbsp; Est. read: 4 min</p>
+    <img class="modal-image" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80" alt="Developer coding">
+    <div class="modal-body">
+      <p>Cursor, the AI-native coding environment developed by Anysphere, is in advanced negotiations to raise $2 billion at a pre-money valuation exceeding $50 billion — a figure that, if confirmed, would nearly double the company's valuation from just five months ago and place it firmly among the most valuable private technology companies in the world. The round is being co-led by Thrive Capital and Andreessen Horowitz, with Nvidia participating as a strategic investor alongside Battery Ventures. Multiple sources confirm the round is already oversubscribed, reflecting the degree to which enterprise appetite for AI coding infrastructure has outpaced even the most optimistic projections from 2024.</p>
+      <p>The velocity of Cursor's revenue growth is perhaps the most striking aspect of the story. The company reached $100 million in annualised recurring revenue in January 2025. By June it had crossed $500 million. November brought $1 billion, and by February 2026, revenue had doubled again to $2 billion. Analysts now project the figure will exceed $6 billion by year-end. Seventy percent of Fortune 1,000 companies now count Cursor among their licensed developer tools — a penetration rate that speaks to the degree to which AI-augmented coding has shifted from experiment to standard practice in large organisations.</p>
+      <p>The deeper question raised by Cursor's ascent is structural. If a single AI coding tool can command a $50 billion valuation on $2 billion in revenue — a multiple of 25x — what does that imply for the broader software development labour market? The AI coding tools sector generated $12.8 billion in revenue in 2026, more than double the $5.1 billion recorded in 2024. Nvidia's strategic participation is particularly telling: the chipmaker does not typically back software companies without an expectation of downstream compute consumption at scale. Whether Cursor can sustain these multiples as competition from Microsoft, Google and Amazon intensifies remains the salient open question — but for now, the market has spoken decisively.</p>
+    </div>
+  </div>
+</div>
+
+<div id="modal-meta" class="modal-overlay" onclick="closeOnOverlay(event,this)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-meta')">&times;</button>
+    <p class="modal-label">Artificial Intelligence &nbsp;·&nbsp; April 8, 2026</p>
+    <h2 class="modal-title">Meta's Muse Spark Signals a Strategic Pivot Toward Proprietary AI</h2>
+    <p class="modal-deck">In a departure from its open-source tradition, Meta has released Muse Spark, a natively multimodal model built under Alexandr Wang's superintelligence unit.</p>
+    <p class="modal-byline">By The Daily Clarion AI Correspondent &nbsp;·&nbsp; Est. read: 4 min</p>
+    <img class="modal-image" src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80" alt="AI interface">
+    <div class="modal-body">
+      <p>Meta's release of Muse Spark represents one of the more consequential strategic shifts in the company's recent history. For years, Meta cultivated its reputation as the foremost advocate for open-source AI through the LLaMA family of models. Muse Spark breaks with that tradition entirely: it is a proprietary, closed-weight model developed by Meta Superintelligence Labs, the unit formed last year under Scale AI's former chief executive Alexandr Wang, who joined Meta in a deal reportedly valued at $14 billion. The model is natively multimodal — accepting voice, text and image inputs — and supports tool use, visual chain-of-thought reasoning and multi-agent orchestration, placing it in competition with Anthropic's Claude and Google's Gemini at the frontier of reasoning-capable systems.</p>
+      <p>The model operates in three distinct modes: a fast, lightweight mode for simple queries; a standard reasoning mode for complex tasks such as legal document analysis; and a "Contemplating" mode, which employs a coordinated squad of AI agents reasoning in parallel to handle the most demanding problems. Meta describes this last mode as enabling Muse Spark to "compete with the extreme reasoning modes of frontier models such as Gemini Deep Think and GPT Pro." Whether that claim survives independent benchmarking remains to be seen, but the ambition is unmistakable.</p>
+      <p>The commercial logic behind Muse Spark is equally important to understand. Meta operates platforms that collectively command the attention of more than three billion people daily. Embedding a proprietary, frontier-quality AI model into those surfaces is not merely a product decision; it is a data acquisition and monetisation strategy of the first order. Unlike LLaMA models, whose usage occurs largely outside Meta's direct observation, every interaction with Muse Spark on a Meta platform generates proprietary feedback that can be used to improve the model and, eventually, to target advertising with greater precision. This is the true logic of the pivot to proprietary AI — and it has implications for every competitor in the ecosystem.</p>
+    </div>
+  </div>
+</div>
+
+<div id="modal-deepseek" class="modal-overlay" onclick="closeOnOverlay(event,this)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-deepseek')">&times;</button>
+    <p class="modal-label">Global AI Competition &nbsp;·&nbsp; April 21, 2026</p>
+    <h2 class="modal-title">DeepSeek V4 Poised for Late-April Launch with One Trillion Parameters</h2>
+    <p class="modal-deck">The Chinese laboratory's fourth major model challenges the assumption that frontier AI requires Western chip infrastructure.</p>
+    <p class="modal-byline">By The Daily Clarion Technology Desk &nbsp;·&nbsp; Est. read: 4 min</p>
+    <img class="modal-image" src="https://images.unsplash.com/photo-1620825937374-87fc7d6bddc2?w=800&q=80" alt="AI chip">
+    <div class="modal-body">
+      <p>DeepSeek's forthcoming V4 model — expected to launch before the end of April — represents a significant escalation in the laboratory's ambitions. At one trillion total parameters organised in a Mixture-of-Experts architecture, V4 is substantially larger than its predecessor and is being trained and run entirely on Huawei's Ascend 910C chips rather than Nvidia hardware — a technical achievement of considerable geopolitical weight given US export controls on advanced semiconductors. The model will be released under the Apache 2.0 open-source licence with a one-million-token context window and native multimodal capabilities spanning text, image and video.</p>
+      <p>The benchmarks are striking. DeepSeek V4 achieves 81% on the SWE-bench coding evaluation while offering inference at roughly $0.30 per million tokens — undercutting most Western frontier models by an order of magnitude. The previous DeepSeek V3 model was estimated to have cost $5.2 million to train, a figure that provoked significant consternation in Silicon Valley. V4's training costs have not been formally published, but analysts expect them to be materially higher given the scale increase, though still far below the hundreds of millions spent by US laboratories on comparable systems.</p>
+      <p>The strategic implications are considerable. Each successive DeepSeek release has demonstrated that the assumption undergirding most US AI policy — that export controls on Nvidia chips would throttle Chinese AI progress — is empirically questionable. DeepSeek's engineers have proven adept at achieving frontier-level performance through algorithmic innovation and architectural efficiency rather than raw compute expenditure. If V4 performs as preliminary benchmarks suggest, it will place a freely available, Apache-licensed, one-trillion-parameter model in the hands of any developer or government in the world, fundamentally altering the competitive dynamics of both commercial AI and national AI capability assessments.</p>
+    </div>
+  </div>
+</div>
+
+<div id="modal-openai" class="modal-overlay" onclick="closeOnOverlay(event,this)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-openai')">&times;</button>
+    <p class="modal-label">Business Model &nbsp;·&nbsp; April 21, 2026</p>
+    <h2 class="modal-title">OpenAI's $100 Billion Advertising Ambition and What It Means for the Open Web</h2>
+    <p class="modal-deck">OpenAI projects $2.5 billion in ad revenue for 2026, scaling to $100 billion annually by 2030 — reshaping the economics of the open web.</p>
+    <p class="modal-byline">By The Daily Clarion Business Desk &nbsp;·&nbsp; Est. read: 4 min</p>
+    <img class="modal-image" src="https://images.unsplash.com/photo-1579389083078-4e7018379f7e?w=800&q=80" alt="Digital advertising">
+    <div class="modal-body">
+      <p>OpenAI's decision to pursue advertising revenue represents one of the most consequential business model shifts in the company's history. Having grown rapidly on subscription revenue from ChatGPT Pro and enterprise API contracts, the company is now projecting $2.5 billion in advertising revenue for 2026, scaling to a target of $100 billion annually by 2030. For context, that figure exceeds the current total advertising revenue of the New York Times, the Washington Post, and the entire American magazine industry combined — and approaches the annual advertising revenues of Alphabet's YouTube division.</p>
+      <p>The strategic logic is legible, if audacious. OpenAI's large language models are becoming the primary interface through which a growing proportion of users discover information, make purchasing decisions and research products. In this context, the company occupies a position analogous to where Google sat in 2003: at the top of an information funnel that is both extraordinarily valuable and almost entirely un-monetised through traditional advertising mechanisms. The shift toward advertising is simply the belated application of the internet's most proven business model to a new category of information intermediary.</p>
+      <p>The implications for the broader information ecosystem are, however, more unsettling. If OpenAI's AI-generated responses begin incorporating sponsored content — even with clear disclosure — users will face a new challenge: distinguishing between AI recommendations that reflect genuine analysis and those that reflect commercial relationships. The open web, which Google's search advertising model profoundly shaped over two decades, may face a second, more disruptive transformation as AI answer engines displace keyword-indexed search. Publishers who have already lost search traffic to AI summaries now face the prospect of competing against a system that is actively incentivised to keep users within its own monetisation environment.</p>
+    </div>
+  </div>
+</div>
+
+<div id="modal-vc" class="modal-overlay" onclick="closeOnOverlay(event,this)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-vc')">&times;</button>
+    <p class="modal-label">Markets &amp; Venture Capital &nbsp;·&nbsp; April 21, 2026</p>
+    <h2 class="modal-title">Q1 2026 Shatters Venture Records With $300 Billion Deployed — But the Spoils Flow Narrowly</h2>
+    <p class="modal-deck">Global venture funding hit an all-time quarterly record, yet PwC data shows that 75% of AI's economic gains are going to just 20% of companies.</p>
+    <p class="modal-byline">By The Daily Clarion Markets Desk &nbsp;·&nbsp; Est. read: 4 min</p>
+    <img class="modal-image" src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80" alt="Financial data">
+    <div class="modal-body">
+      <p>Global venture capital deployment in the first quarter of 2026 reached $300 billion, according to Crunchbase data — the highest figure ever recorded for a single quarter and more than double the comparable period in 2024. The surge is almost entirely attributable to a small number of very large AI infrastructure rounds, with robotics, data centre capacity and AI software platforms accounting for the preponderance of capital deployed. The record is impressive in aggregate; it is considerably less impressive when examined at the level of distribution.</p>
+      <p>Concurrent analysis from PwC's 2026 AI Performance Study paints a more sobering picture. Three quarters of the economic gains generated by AI investment are being captured by just 20% of companies. The leading firms are, tellingly, focused on growth rather than productivity — suggesting that AI is functioning not as a broad efficiency multiplier across the economy but as a concentration mechanism, accelerating the competitive advantages of those who were already well-positioned to exploit it. This pattern mirrors historical episodes of transformative technology adoption, from the electrification of manufacturing in the 1920s to the commercialisation of the internet in the 1990s, in both of which the initial benefits accrued disproportionately to incumbents before eventually diffusing more broadly.</p>
+      <p>For venture investors, the implications are double-edged. The headline $300 billion figure speaks to extraordinary confidence in AI's long-term value creation potential. But the narrowing of returns raises a structural question about the viability of early-stage AI startups that lack access to scale, data advantages and proprietary model access. Cursor's extraordinary valuation offers one counter-narrative: a company that found a specific, high-value application layer atop existing foundation models and scaled it ferociously. Whether that model is repeatable across the broader AI application landscape, or whether it is the exception that proves the rule of concentration, will define the shape of the next decade in technology investment.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+  function closeOnOverlay(e,el) { if(e.target===el){ el.classList.remove('open'); document.body.style.overflow=''; } }
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ document.querySelectorAll('.modal-overlay.open').forEach(m=>{ m.classList.remove('open'); document.body.style.overflow=''; }); } });
+</script>
+</body>
+</html>
