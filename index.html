@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Daily Clarion — Technology & AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #fafaf8; --bg2: #f4f3ef; --accent: #1a56db; --accent-dark: #1340a8;
+    --text: #1a1a1a; --text-muted: #555; --text-light: #888; --border: #ddd;
+    --serif: 'Playfair Display', Georgia, serif;
+    --body-serif: 'Source Serif 4', Georgia, serif;
+    --sans: 'Inter', sans-serif;
+  }
+  body { background: var(--bg); color: var(--text); font-family: var(--body-serif); line-height: 1.6; }
+  header { background: var(--bg); border-bottom: 3px solid var(--text); }
+  .header-top { display: flex; align-items: center; justify-content: space-between; padding: 16px 40px 12px; border-bottom: 1px solid var(--border); }
+  .header-date { font-family: var(--sans); font-size: 13px; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; }
+  .header-logo h1 { font-family: var(--serif); font-size: clamp(2rem,5vw,3.5rem); font-weight: 900; letter-spacing: -0.02em; color: var(--text); text-align:center; }
+  .header-logo .tagline { font-family: var(--sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-top: 2px; text-align:center; }
+  .header-right { font-family: var(--sans); font-size: 13px; color: var(--text-muted); text-align: right; }
+  nav { display: flex; gap: 0; border-top: 1px solid var(--border); }
+  nav a { font-family: var(--sans); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text); text-decoration: none; padding: 10px 20px; border-right: 1px solid var(--border); transition: background 0.2s; }
+  nav a:hover { background: var(--accent); color: white; }
+  main { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+  .hero { display: grid; grid-template-columns: 1fr 380px; gap: 40px; padding-bottom: 40px; border-bottom: 2px solid var(--text); margin-bottom: 40px; }
+  .hero-category { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .hero-title { font-family: var(--serif); font-size: clamp(1.8rem,3.5vw,2.8rem); font-weight: 700; line-height: 1.15; margin-bottom: 16px; }
+  .hero-subtitle { font-size: 1.1rem; font-weight: 300; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; font-style: italic; }
+  .hero-body { font-size: 1rem; line-height: 1.75; }
+  .hero-body p + p { margin-top: 14px; }
+  .hero-meta { display: flex; align-items: center; gap: 16px; margin-top: 20px; }
+  .hero-meta .byline { font-family: var(--sans); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .readmore { font-family: var(--sans); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); cursor: pointer; border: none; background: none; padding: 0; }
+  .readmore:hover { text-decoration: underline; }
+  .hero-aside { border-left: 1px solid var(--border); padding-left: 40px; }
+  .aside-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .aside-item { padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .aside-item:last-child { border-bottom: none; }
+  .aside-item .cat { font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  .aside-item h3 { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+  .aside-item h3:hover { color: var(--accent); }
+  .aside-item p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.55; }
+  .section-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 2px solid var(--text); }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .card { cursor: pointer; }
+  .card img { width: 100%; height: 180px; object-fit: cover; display: block; margin-bottom: 16px; }
+  .card .cat { font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .card h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 700; line-height: 1.3; margin-bottom: 10px; }
+  .card h3:hover { color: var(--accent); }
+  .card p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; }
+  .card .card-meta { margin-top: 12px; font-family: var(--sans); font-size: 11px; color: var(--text-light); display: flex; justify-content: space-between; }
+  footer { background: var(--text); color: white; padding: 40px; margin-top: 60px; }
+  footer .footer-logo { font-family: var(--serif); font-size: 1.8rem; font-weight: 900; margin-bottom: 8px; }
+  footer p { font-family: var(--sans); font-size: 13px; color: #aaa; }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: flex-start; justify-content: center; padding: 40px 20px; overflow-y: auto; }
+  .modal-overlay.active { display: flex; }
+  .modal { background: var(--bg); max-width: 720px; width: 100%; padding: 50px; position: relative; margin: auto; }
+  .modal-close { position: absolute; top: 20px; right: 20px; font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; color: var(--text-muted); background: none; border: 1px solid var(--border); padding: 6px 12px; }
+  .modal-close:hover { background: var(--text); color: white; }
+  .modal-cat { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+  .modal h2 { font-family: var(--serif); font-size: clamp(1.4rem,3vw,2rem); font-weight: 700; line-height: 1.2; margin-bottom: 14px; }
+  .modal .modal-sub { font-size: 1rem; font-weight: 300; font-style: italic; color: var(--text-muted); margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border); line-height: 1.6; }
+  .modal .modal-body p { font-size: 1rem; line-height: 1.8; margin-bottom: 18px; }
+  .modal .modal-source { font-family: var(--sans); font-size: 12px; color: var(--text-light); margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+  @media (max-width: 768px) {
+    .header-top { flex-direction: column; gap: 8px; padding: 16px; text-align: center; }
+    .header-right { text-align: center; }
+    nav { overflow-x: auto; }
+    nav a { padding: 8px 14px; white-space: nowrap; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-aside { border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 24px; margin-top: 24px; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .modal { padding: 30px 20px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-top">
+    <div class="header-date">Sunday, May 3, 2026</div>
+    <div class="header-logo">
+      <h1>The Daily Clarion</h1>
+      <div class="tagline">Independent Analysis of Technology &amp; Society</div>
+    </div>
+    <div class="header-right">Technology &middot; AI &middot; Economy<br>Est. 2021</div>
+  </div>
+  <nav>
+    <a href="#">Technology</a><a href="#">Artificial Intelligence</a><a href="#">Startups</a>
+    <a href="#">Policy</a><a href="#">Markets</a><a href="#">Opinion</a>
+  </nav>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-category">Defence &amp; Technology</div>
+      <h2 class="hero-title">The Pentagon&rsquo;s AI Alliance: Power, Profits, and a Notable Absence</h2>
+      <div class="hero-subtitle">The Department of Defense has signed landmark AI agreements with seven technology giants for classified networks &mdash; while Anthropic&rsquo;s exclusion raises uncomfortable questions about the price of principle.</div>
+      <div class="hero-body">
+        <p>In a move that reshapes the frontier between Silicon Valley and the American military-industrial complex, the Department of Defense formalised artificial intelligence agreements with seven of the world&rsquo;s most powerful technology companies: OpenAI, Google, Microsoft, Amazon Web Services, Nvidia, SpaceX, and Reflection AI. The tools will be deployed across Impact Level 6 and 7 networks &mdash; the Pentagon&rsquo;s most sensitive classified infrastructure &mdash; accessible through GenAI.mil.</p>
+        <p>The implications are profound. For the first time, commercial large language models will have systematic access to classified data environments, a development that simultaneously marks a technological leap and a governance frontier largely uncharted in democratic societies. The speed with which this arrangement was formalised &mdash; with minimal public deliberation &mdash; raises questions that policymakers have been slow to confront.</p>
+        <p>Most conspicuous is the absence of Anthropic, the AI safety-focused company co-founded by former OpenAI researchers. The Trump administration reportedly excluded Anthropic after the company insisted on embedding safety guardrails for military AI use. That a company was penalised for insisting on safety conditions in the context of warfare marks a troubling precedent &mdash; one that the remaining seven signatories appear content to overlook.</p>
+      </div>
+      <div class="hero-meta">
+        <span class="byline">Editorial Team</span>
+        <button class="readmore" onclick="openModal('modal1')">Read Full Analysis &rarr;</button>
+      </div>
+    </div>
+    <div class="hero-aside">
+      <div class="aside-title">Also Today</div>
+      <div class="aside-item" onclick="openModal('modal2')">
+        <div class="cat">Labour &amp; AI</div>
+        <h3>92,000 Lost Positions: The Human Cost Behind Big Tech&rsquo;s AI Pivot</h3>
+        <p>As Meta prepares to cut 8,000 jobs on May 20, the tech industry&rsquo;s workforce is shrinking at historically unprecedented rates &mdash; even as AI investment reaches $650 billion annually.</p>
+      </div>
+      <div class="aside-item" onclick="openModal('modal3')">
+        <div class="cat">Enterprise Revenue</div>
+        <h3>Google and Microsoft Are Printing Money from AI. OpenAI Is Not.</h3>
+        <p>Google Cloud grew 63% year-over-year to $20B. Microsoft&rsquo;s AI business surpassed a $37B annual run rate. The winners built the infrastructure.</p>
+      </div>
+      <div class="aside-item" onclick="openModal('modal4')">
+        <div class="cat">Venture Capital</div>
+        <h3>Applied AI Attracts Capital: $250M+ in New Rounds This Week</h3>
+        <p>Hightouch raised $150M at $2.75B valuation. Parallel Web Systems secured $100M. BMW i Ventures launched a $300M industrial AI fund.</p>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="section-title">In Depth</div>
+    <div class="grid-3">
+      <div class="card" onclick="openModal('modal5')">
+        <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80" alt="Snap">
+        <div class="cat">Corporate Strategy</div>
+        <h3>Snap Eliminates a Quarter of Its Planned Workforce, Citing AI Efficiency</h3>
+        <p>CEO Evan Spiegel announced layoffs of 1,000 employees and closure of 300+ open roles, framing AI as a force multiplier that enables smaller teams to match larger output.</p>
+        <div class="card-meta"><span>Corporate</span><span>May 3, 2026</span></div>
+      </div>
+      <div class="card" onclick="openModal('modal3')">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" alt="Revenue">
+        <div class="cat">Markets</div>
+        <h3>The Divergence: How Platform AI Is Becoming the Most Profitable Business in History</h3>
+        <p>Q1 results from Google and Microsoft represent the fastest revenue acceleration at enterprise scale in the history of technology. The question is whether this compounds or plateaus.</p>
+        <div class="card-meta"><span>Markets</span><span>May 3, 2026</span></div>
+      </div>
+      <div class="card" onclick="openModal('modal4')">
+        <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80" alt="Funding">
+        <div class="cat">Investment</div>
+        <h3>Industrial AI Draws $300M BMW Venture Fund as Sector Matures Beyond Hype</h3>
+        <p>BMW i Ventures&rsquo; new fund signals a maturation in how capital understands AI &mdash; away from consumer chatbots and toward solving complex industrial problems at scale.</p>
+        <div class="card-meta"><span>Investment</span><span>May 3, 2026</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="modal-overlay" id="modal1" onclick="closeModal(event,'modal1')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect('modal1')">&#x2715; Close</button>
+    <div class="modal-cat">Defence &amp; Technology</div>
+    <h2>The Pentagon&rsquo;s AI Alliance: Power, Profits, and a Notable Absence</h2>
+    <div class="modal-sub">The Department of Defense signed landmark AI agreements with seven technology giants &mdash; while Anthropic&rsquo;s exclusion raises uncomfortable questions about the price of principle.</div>
+    <div class="modal-body">
+      <p>In a move that reshapes the frontier between Silicon Valley and the American military-industrial complex, the Department of Defense formalised artificial intelligence agreements with seven of the world&rsquo;s most powerful technology companies: OpenAI, Google, Microsoft, Amazon Web Services, Nvidia, SpaceX, and Reflection AI. The tools will be deployed across Impact Level 6 and 7 networks &mdash; the Pentagon&rsquo;s most sensitive classified infrastructure &mdash; accessible through GenAI.mil, the military&rsquo;s central AI platform.</p>
+      <p>The implications are profound and far-reaching. For the first time, commercial large language models will have systematic access to classified data environments, a development that simultaneously marks a technological leap and a governance frontier largely uncharted in democratic societies. The speed with which this arrangement was formalised &mdash; with minimal public deliberation &mdash; raises questions that policymakers have been slow to confront.</p>
+      <p>Most conspicuous is the absence of Anthropic, the AI safety-focused company co-founded by former OpenAI researchers. The Trump administration reportedly excluded Anthropic after the company insisted on embedding certain safety guardrails into any military use of its models. That a company was penalised for insisting on safety conditions in the context of warfare marks a troubling precedent &mdash; one that the remaining seven signatories, in their haste to secure contracts, appear content to overlook.</p>
+      <p>The commercial dimensions of these deals should not be obscured by the security framing. For Microsoft, Google, and Amazon, Pentagon contracts represent not only revenue but validation &mdash; proof that enterprise AI is production-grade at the highest security classifications. For OpenAI, the deal is particularly significant: the company has struggled to translate its consumer dominance into predictable enterprise revenue, and military contracts help close that financial gap.</p>
+      <p>For society at large, the questions are harder. Who is responsible when an AI system advises military command? What accountability structures exist when decisions influenced by these models lead to harm? The Pentagon&rsquo;s new agreements are less a culmination than a beginning &mdash; the first chapter of a governance challenge that democracies are only beginning to understand they must address.</p>
+    </div>
+    <div class="modal-source">Sources: CNN Business, The Washington Post, Breaking Defense, NextGov &mdash; May 1&ndash;2, 2026</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal2" onclick="closeModal(event,'modal2')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect('modal2')">&#x2715; Close</button>
+    <div class="modal-cat">Labour &amp; AI</div>
+    <h2>92,000 Lost Positions: The Human Cost Behind Big Tech&rsquo;s AI Pivot</h2>
+    <div class="modal-sub">As Meta prepares to cut 8,000 jobs on May 20, the tech industry&rsquo;s workforce is shrinking at an historically unprecedented rate &mdash; even as AI investment reaches $650 billion annually.</div>
+    <div class="modal-body">
+      <p>The numbers are stark. Over 92,000 technology sector workers have been laid off so far in 2026, contributing to a total of nearly 900,000 job losses in the industry since 2020. The current pace &mdash; an average of 882 layoffs per day &mdash; represents not a temporary correction but a structural transformation of one of the world&rsquo;s most consequential economic sectors.</p>
+      <p>Meta&rsquo;s announcement that it will lay off approximately 8,000 employees on May 20 illustrates the calculus now governing Silicon Valley. Even as CEO Mark Zuckerberg commits between $115 billion and $135 billion to AI infrastructure this year, the company is eliminating the human labour it deems replaceable by the very systems it is building. Microsoft, Amazon, and Google executives used the word &ldquo;efficiency&rdquo; fifteen times collectively in their most recent earnings calls.</p>
+      <p>Analysis from industry researchers suggests the relationship between AI investment and job displacement is more nuanced than a simple substitution narrative. The primary driver of layoffs is not that AI has replaced workers&rsquo; tasks wholesale &mdash; in most cases the technology cannot yet do so &mdash; but that the enormous capital expenditure required to build AI infrastructure creates intense pressure to find savings in controllable costs. Human payroll is among the most controllable.</p>
+      <p>One encouraging counterpoint emerged from China, where a court ruled that companies cannot terminate staff solely to replace them with AI &mdash; following a similar ruling in December 2025. Whether Western legal systems will develop analogous protections remains to be seen. Washington policymakers are debating frameworks, but legislation has not kept pace with the speed of corporate action. The workers bearing the cost of AI&rsquo;s construction are not necessarily the ones being replaced by it; they are being sacrificed to fund it.</p>
+    </div>
+    <div class="modal-source">Sources: CNBC, The Next Web, Washington Post, Tom&rsquo;s Hardware &mdash; April&ndash;May 2026</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal3" onclick="closeModal(event,'modal3')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect('modal3')">&#x2715; Close</button>
+    <div class="modal-cat">Enterprise Revenue</div>
+    <h2>Google and Microsoft Are Printing Money from AI. OpenAI Is Not.</h2>
+    <div class="modal-sub">Google Cloud grew 63% year-over-year. Microsoft&rsquo;s AI business hit a $37 billion annual run rate. The winners of the AI era built the infrastructure, not necessarily the technology.</div>
+    <div class="modal-body">
+      <p>The results from Google and Microsoft this quarter amount to a financial verdict on who is winning the AI era &mdash; and the answer is the incumbents who controlled the infrastructure before the wave arrived. Google Cloud posted $20.03 billion in Q1 2026 revenue, a 63% increase year-over-year. Microsoft&rsquo;s AI-related business surpassed a $37 billion annual revenue run rate, representing growth of 123% year-over-year. These are not incremental numbers; they are category-defining results at a scale the technology industry has rarely witnessed.</p>
+      <p>The contrast with OpenAI is instructive. OpenAI, the company whose release of ChatGPT catalysed the current era, continues to post losses that dwarf its revenue. While consumer adoption of its products remains enormous, the company has struggled to translate usage into the durable enterprise contracts that generate predictable, recurring income. Investors have subsidised this gap with extraordinary generosity &mdash; OpenAI&rsquo;s valuation has reached the high hundreds of billions &mdash; but the gap between aspiration and financial reality is one that the Pentagon contracts this week are partly designed to close.</p>
+      <p>The deeper lesson is structural. Google and Microsoft benefit from complementary assets: data centres, enterprise relationships, cloud infrastructure, and sales organisations built over decades. When AI emerged as a capability, these companies could integrate it into existing products &mdash; Azure, Google Workspace &mdash; and charge incremental premiums to customers already on their platforms. OpenAI, starting from nothing, must build these commercial relationships from scratch. The company that invented the technology may ultimately be the one least positioned to monetise it at scale.</p>
+    </div>
+    <div class="modal-source">Sources: Decrypt, Yahoo Finance &mdash; May 2026</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal4" onclick="closeModal(event,'modal4')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect('modal4')">&#x2715; Close</button>
+    <div class="modal-cat">Investment</div>
+    <h2>Applied AI Attracts Capital: $250M+ in New Funding Rounds This Week</h2>
+    <div class="modal-sub">Hightouch raised $150M for enterprise data automation. Parallel Web Systems secured $100M at $2B valuation. BMW i Ventures launched a $300M industrial AI fund. Capital is moving downstream.</div>
+    <div class="modal-body">
+      <p>The venture capital data from May 2026 suggests a meaningful shift in where sophisticated investors believe AI value will accrue. Hightouch, which helps enterprises use customer data to automate and personalise marketing workflows, raised $150 million at a $2.75 billion valuation in a round led by Goldman Sachs Alternatives and Bain Capital Ventures. Parallel Web Systems, founded by former Twitter CEO Parag Agrawal, secured $100 million from Sequoia Capital at a $2 billion valuation. Featherless.ai, providing serverless inference infrastructure for open-source models, raised $20 million in a Series A co-led by AMD Ventures and Airbus Ventures.</p>
+      <p>The most strategically significant development may be BMW i Ventures&rsquo; new $300 million fund dedicated to manufacturing AI and industrial automation. For years, dominant AI investment focused on foundation model companies and consumer applications. BMW&rsquo;s fund signals a conviction that the greatest returns will be generated by companies applying AI to solve hard, specific problems in physical industries &mdash; manufacturing tolerances, supply chain optimisation, quality control &mdash; rather than by those building general-purpose reasoning systems.</p>
+      <p>The broader pattern is one of capital maturation. Early AI venture investment was characterised by enthusiasm and generality. The current wave is more discriminating. Investors are rewarding companies that demonstrate unit economics, category leadership, and defensible moats &mdash; proprietary data, network effects, or technical specialisation that makes it difficult for competitors to replicate their offering. Companies that cannot prove these characteristics are finding the market considerably less forgiving than eighteen months ago.</p>
+    </div>
+    <div class="modal-source">Sources: mean.ceo, Fundraise Insider, TechFundingNews &mdash; May 2026</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal5" onclick="closeModal(event,'modal5')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect('modal5')">&#x2715; Close</button>
+    <div class="modal-cat">Corporate Strategy</div>
+    <h2>Snap Eliminates a Quarter of Its Planned Workforce, Citing AI Efficiency</h2>
+    <div class="modal-sub">CEO Evan Spiegel announced layoffs of ~1,000 employees and closure of 300+ open roles &mdash; a move that frames AI not merely as a product feature but as a labour substitute.</div>
+    <div class="modal-body">
+      <p>Snap Inc., the company behind Snapchat, announced it would lay off approximately 1,000 employees and close more than 300 open positions &mdash; a total reduction of roughly one quarter of its planned headcount. CEO Evan Spiegel&rsquo;s explanation was characteristically Silicon Valley in its framing: &ldquo;rapid advancements in artificial intelligence&rdquo; now allow smaller teams to achieve the same output as larger ones. The explanation is, by now, familiar. It is also worth interrogating.</p>
+      <p>Snap&rsquo;s financial position makes the context important. The company has struggled to achieve consistent profitability in an advertising market where Meta and TikTok command disproportionate share. The layoffs, while framed in the language of AI efficiency, are also a cost-reduction measure for a company that has consistently spent more than it earns. The AI rationale is not necessarily wrong &mdash; it is almost certainly true that AI tools reduce the headcount required for certain engineering and content functions &mdash; but it is partial. Companies have long sought to reduce labour costs; AI now provides both the mechanism and the rhetorical cover.</p>
+      <p>The broader significance lies in what Snap&rsquo;s announcement represents for the technology labour market. If a company of Snap&rsquo;s scale can credibly claim to need 25% fewer people due to AI, the implications for white-collar employment across industries are considerable. The jobs being eliminated are knowledge worker roles that, as recently as five years ago, were considered the most resilient to technological displacement. The adaptation required of workers and policymakers alike is significant, and it is arriving faster than either has prepared for.</p>
+    </div>
+    <div class="modal-source">Sources: AI News aggregators, industry reports &mdash; May 2026</div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">The Daily Clarion</div>
+  <p>Independent Technology Analysis &middot; Sunday, May 3, 2026 &middot; All articles reflect editorial analysis based on publicly available reporting.</p>
+</footer>
+<script>
+  function openModal(id){document.getElementById(id).classList.add('active');document.body.style.overflow='hidden';}
+  function closeModal(e,id){if(e.target===document.getElementById(id))closeModalDirect(id);}
+  function closeModalDirect(id){document.getElementById(id).classList.remove('active');document.body.style.overflow='';}
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.active').forEach(m=>{m.classList.remove('active');document.body.style.overflow='';});});
+</script>
+</body>
+</html>
