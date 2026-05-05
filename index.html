@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Daily Clarion — Technology & Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Serif+4:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --cream: #fafaf8; --blue: #1a56db; --dark: #1a1a2e; --mid: #4a5568; --light: #e8e8e4; --accent: #c8a96e; }
+  body { background: var(--cream); color: var(--dark); font-family: 'Source Serif 4', serif; font-size: 17px; line-height: 1.65; }
+  a { color: inherit; text-decoration: none; }
+  .site-header { border-bottom: 3px solid var(--dark); background: var(--cream); position: sticky; top: 0; z-index: 100; }
+  .header-top { display: flex; align-items: center; justify-content: space-between; padding: 12px 5%; border-bottom: 1px solid var(--light); }
+  .header-date { font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.08em; color: var(--mid); text-transform: uppercase; }
+  .logo { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; letter-spacing: -0.02em; color: var(--dark); text-align: center; flex: 1; }
+  .logo span { color: var(--blue); }
+  .header-tag { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.1em; color: var(--mid); text-align: right; text-transform: uppercase; }
+  .header-nav { display: flex; gap: 28px; padding: 10px 5%; justify-content: center; }
+  .header-nav a { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dark); transition: color 0.2s; }
+  .header-nav a:hover { color: var(--blue); }
+  main { max-width: 1180px; margin: 0 auto; padding: 40px 5% 60px; }
+  .hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; padding-bottom: 48px; border-bottom: 2px solid var(--dark); margin-bottom: 48px; cursor: pointer; }
+  .hero:hover .hero-title { color: var(--blue); }
+  .hero-img { width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+  .hero-kicker { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 14px; }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: 2.1rem; font-weight: 700; line-height: 1.2; margin-bottom: 16px; transition: color 0.2s; }
+  .hero-sub { font-size: 1.05rem; color: var(--mid); line-height: 1.7; margin-bottom: 18px; }
+  .hero-byline { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--mid); letter-spacing: 0.04em; }
+  .hero-byline span { color: var(--dark); font-weight: 500; }
+  .secondary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid var(--light); }
+  .article-card { cursor: pointer; }
+  .article-card:hover .card-title { color: var(--blue); }
+  .card-img { width: 100%; aspect-ratio: 3/2; object-fit: cover; margin-bottom: 16px; }
+  .card-kicker { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; line-height: 1.3; margin-bottom: 10px; transition: color 0.2s; }
+  .card-excerpt { font-size: 0.9rem; color: var(--mid); line-height: 1.6; }
+  .card-divider { border: none; border-top: 1px solid var(--light); margin: 16px 0; }
+  .fifth-story { display: grid; grid-template-columns: 1fr 2fr; gap: 36px; padding-bottom: 48px; border-bottom: 1px solid var(--light); margin-bottom: 48px; cursor: pointer; }
+  .fifth-story:hover .fifth-title { color: var(--blue); }
+  .fifth-story-img { width: 100%; object-fit: cover; aspect-ratio: 4/3; }
+  .fifth-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; line-height: 1.3; margin-bottom: 12px; transition: color 0.2s; }
+  footer { border-top: 3px solid var(--dark); padding: 32px 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; }
+  .footer-copy { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--mid); letter-spacing: 0.06em; }
+  .footer-note { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--mid); font-style: italic; }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,26,46,0.75); z-index: 1000; align-items: flex-start; justify-content: center; padding: 40px 20px; overflow-y: auto; }
+  .modal-overlay.active { display: flex; }
+  .modal { background: var(--cream); max-width: 740px; width: 100%; padding: 52px 52px 40px; position: relative; }
+  .modal-close { position: absolute; top: 20px; right: 24px; background: none; border: none; font-size: 1.6rem; cursor: pointer; color: var(--mid); font-family: 'Inter', sans-serif; }
+  .modal-close:hover { color: var(--dark); }
+  .modal-kicker { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); margin-bottom: 16px; }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; line-height: 1.25; margin-bottom: 12px; }
+  .modal-sub { font-size: 1.05rem; color: var(--mid); line-height: 1.65; margin-bottom: 20px; }
+  .modal-divider { border: none; border-top: 2px solid var(--dark); margin: 20px 0; }
+  .modal-body p { margin-bottom: 20px; line-height: 1.75; font-size: 0.98rem; }
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; gap: 24px; }
+    .secondary-grid { grid-template-columns: 1fr; }
+    .fifth-story { grid-template-columns: 1fr; }
+    .logo { font-size: 1.6rem; }
+    .modal { padding: 36px 24px 28px; }
+    .modal-title { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-top">
+    <div class="header-date">Tuesday, May 5, 2026</div>
+    <div class="logo">The Daily <span>Clarion</span></div>
+    <div class="header-tag">Technology &amp; Intelligence</div>
+  </div>
+  <nav class="header-nav">
+    <a href="#">Analysis</a><a href="#">Policy</a><a href="#">Markets</a><a href="#">Science</a><a href="#">Security</a><a href="#">Opinion</a>
+  </nav>
+</header>
+<main>
+  <article class="hero" onclick="openModal('m1')">
+    <img class="hero-img" src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=800&q=80" alt="Pentagon AI">
+    <div class="hero-content">
+      <div class="hero-kicker">Defence &amp; Policy</div>
+      <h1 class="hero-title">Pentagon Secures AI Agreements With Eight Technology Giants, Leaving Anthropic Outside the Fold</h1>
+      <p class="hero-sub">The Department of Defense has formalised arrangements with OpenAI, Google, Microsoft, Amazon, Oracle, SpaceX, Nvidia and Reflection to deploy artificial intelligence across classified military networks — a watershed moment for the role of commercial AI in national security.</p>
+      <div class="hero-byline">By <span>The Clarion Editorial Board</span> &middot; May 5, 2026 &middot; 7 min read</div>
+    </div>
+  </article>
+  <section class="secondary-grid">
+    <article class="article-card" onclick="openModal('m2')">
+      <img class="card-img" src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80" alt="GPT-5.5">
+      <div class="card-kicker">AI Models</div>
+      <h2 class="card-title">OpenAI Releases GPT-5.5 and Severs Its Exclusive Cloud Ties With Microsoft</h2>
+      <hr class="card-divider">
+      <p class="card-excerpt">The company's most capable model yet marks significant progress in agentic reasoning, while a new distribution agreement with Amazon signals a strategic pivot toward platform independence.</p>
+    </article>
+    <article class="article-card" onclick="openModal('m3')">
+      <img class="card-img" src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=600&q=80" alt="Cybersecurity">
+      <div class="card-kicker">Security</div>
+      <h2 class="card-title">Mandiant Report Declares 2026 the Year of AI-Assisted Cyberattacks</h2>
+      <hr class="card-divider">
+      <p class="card-excerpt">As vulnerabilities are now exploited within hours of disclosure, a new intelligence report documents how AI has fundamentally altered the economics and velocity of cyber-offence.</p>
+    </article>
+    <article class="article-card" onclick="openModal('m4')">
+      <img class="card-img" src="https://images.unsplash.com/photo-1532094349884-543559745dee?w=600&q=80" alt="Science AI">
+      <div class="card-kicker">Research</div>
+      <h2 class="card-title">Stanford Study: Human Scientists Outperform Best AI Agents by a Factor of Two</h2>
+      <hr class="card-divider">
+      <p class="card-excerpt">A landmark report published in Nature delivers a sobering corrective: even the most sophisticated AI agents achieve only half the success rate of PhD-level researchers on complex tasks.</p>
+    </article>
+  </section>
+  <article class="fifth-story" onclick="openModal('m5')">
+    <img class="fifth-story-img" src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&q=80" alt="VC Funding">
+    <div>
+      <div class="card-kicker">Venture Capital</div>
+      <h2 class="fifth-title">AI Infrastructure Attracts $800 Million in a Single Week as Investors Double Down on the Industry's Backbone</h2>
+      <p class="card-excerpt">ShengShu Technology's $293 million raise leads a cohort of funding rounds signalling that venture capital has decisively pivoted from application-layer bets to the chips, inference engines and data pipelines that power everything else.</p>
+      <br>
+      <div class="hero-byline">By <span>Markets Desk</span> &middot; May 5, 2026 &middot; 5 min read</div>
+    </div>
+  </article>
+</main>
+<footer>
+  <div class="footer-logo">The Daily Clarion</div>
+  <div class="footer-copy">&copy; 2026 The Daily Clarion. All rights reserved.</div>
+  <div class="footer-note">Independent journalism for the thinking professional.</div>
+</footer>
+
+<div class="modal-overlay" id="m1" onclick="if(event.target===this)closeModal('m1')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m1')">&times;</button>
+    <div class="modal-kicker">Defence &amp; Policy</div>
+    <h2 class="modal-title">Pentagon Secures AI Agreements With Eight Technology Giants, Leaving Anthropic Outside the Fold</h2>
+    <p class="modal-sub">The Department of Defense formalised arrangements with OpenAI, Google, Microsoft, Amazon, Oracle, SpaceX, Nvidia and Reflection to deploy AI across classified military networks.</p>
+    <hr class="modal-divider">
+    <div class="modal-body">
+      <p>In what analysts are calling one of the most consequential technology policy decisions of the decade, the United States Department of Defense has formalised agreements with eight of the world's leading artificial intelligence companies to embed their systems within classified military networks. The signatories — OpenAI, Google, Microsoft, Amazon Web Services, Oracle, SpaceX, Nvidia and Reflection — will provide capabilities spanning intelligence analysis, logistics optimisation, operational planning and, in some cases, lethal decision-support systems. The scale of the undertaking has few peacetime precedents in the history of defence procurement.</p>
+      <p>The exclusion of Anthropic, widely considered among the industry's most safety-conscious laboratories, has attracted substantial commentary. The company was passed over after it insisted that contractual provisions mandate the inclusion of specific safety guardrails governing the government's use of AI in warfare contexts. The Trump administration declined those terms. However, subsequent reporting indicates that dialogue between the White House and Anthropic has quietly resumed in recent weeks, following the laboratory's announcement of several substantive technical breakthroughs — suggesting the exclusion may prove temporary rather than structural.</p>
+      <p>The agreements raise foundational questions that policymakers and ethicists are only beginning to grapple with. When a commercial language model participates in a targeting decision that results in civilian casualties, who bears legal and moral responsibility — the contracting company, the commanding officer, or the institution of procurement itself? The DoD's framework, as currently structured, offers no satisfying answers. What is clear is that the acceleration of AI into the theatre of conflict is no longer a matter of speculation. It is contractually underway, and the philosophical reckoning it demands is running well behind schedule.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m2" onclick="if(event.target===this)closeModal('m2')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m2')">&times;</button>
+    <div class="modal-kicker">AI Models</div>
+    <h2 class="modal-title">OpenAI Releases GPT-5.5 and Severs Its Exclusive Cloud Ties With Microsoft</h2>
+    <p class="modal-sub">The company's most capable model yet marks significant progress in agentic reasoning, while a new distribution agreement with Amazon signals a strategic pivot toward platform independence.</p>
+    <hr class="modal-divider">
+    <div class="modal-body">
+      <p>OpenAI has released GPT-5.5, characterised by the company as its most technically advanced model to date. Independent benchmarks corroborate the claim in several domains: the model demonstrates markedly improved performance on extended agentic tasks — those requiring multi-step tool use, iterative research and autonomous code execution — as well as meaningful gains in scientific reasoning and complex instruction-following. The jump from GPT-5 is less dramatic than previous generational leaps, but the improvements in reliability and coherence across long inference chains are commercially significant for enterprise deployments.</p>
+      <p>The announcement arrived alongside a more structurally significant development. OpenAI confirmed that it is relaxing the exclusivity provisions that had, since the inception of its partnership, tied its most capable models primarily to Microsoft's Azure cloud infrastructure. The company will now distribute through Amazon Web Services, and preliminary discussions with Google are reportedly advanced. For OpenAI, the manoeuvre reduces dependency on a single infrastructure partner at a moment when compute access remains one of the industry's paramount constraints. For Microsoft, which has invested over thirteen billion dollars into the partnership, the arrangement represents a clear diminishment of a competitive moat it had considered durable.</p>
+      <p>The strategic logic is not difficult to read. As AI systems become foundational infrastructure rather than novelty applications, the companies that control distribution — not merely development — will capture disproportionate value. OpenAI's decision to cultivate multiple cloud relationships mirrors the approach of enterprise software incumbents who understood, often belatedly, that dependency on a single infrastructure partner creates long-term vulnerability. Whether Microsoft will respond with countermeasures — accelerating its own internal model development, for instance — remains an open question that will shape competitive dynamics for years.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m3" onclick="if(event.target===this)closeModal('m3')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m3')">&times;</button>
+    <div class="modal-kicker">Security</div>
+    <h2 class="modal-title">Mandiant Report Declares 2026 the Year of AI-Assisted Cyberattacks</h2>
+    <p class="modal-sub">As vulnerabilities are now exploited within hours of disclosure, a new intelligence report documents how AI has fundamentally altered the economics and velocity of cyber-offence.</p>
+    <hr class="modal-divider">
+    <div class="modal-body">
+      <p>Mandiant's M-Trends 2026 report, released this week, quantifies a shift in the threat landscape that security professionals had long anticipated but hoped to forestall. According to the report, 28.3 per cent of disclosed Common Vulnerabilities and Exposures are now exploited within twenty-four hours of public disclosure — a figure that would have been considered alarming even two years ago. The underlying driver is straightforward: AI-assisted tooling has dramatically reduced the time and expertise required to transform a theoretical vulnerability into a deployable exploit. What once demanded teams of specialised researchers can increasingly be achieved by a capable individual armed with the right models.</p>
+      <p>The report documents several novel attack modalities that AI has enabled or amplified. Among the most striking is the emergence of AI-assisted social engineering at industrial scale: phishing campaigns that adapt in real time to the responses of targeted individuals, generating contextually plausible correspondence that bypasses both human scepticism and automated filters. The report also cites a specific incident in which a single threat actor reportedly used an AI coding tool to conduct an extortion campaign simultaneously targeting seventeen organisations — operational parallelism that previously would have required a coordinated criminal group.</p>
+      <p>The implications for enterprise security posture are profound. The conventional model — in which organisations enjoy weeks between vulnerability discovery and its exploitation in the wild — no longer obtains. Patch velocity must increase substantially, but patching alone is insufficient against an adversary capable of discovering novel attack surfaces faster than defenders can enumerate them. The security industry's response will require not merely better tooling, but a fundamental reconceptualisation of what it means to maintain a defensible perimeter when AI has eroded the asymmetric advantage defenders once enjoyed.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m4" onclick="if(event.target===this)closeModal('m4')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m4')">&times;</button>
+    <div class="modal-kicker">Research</div>
+    <h2 class="modal-title">Stanford Study: Human Scientists Outperform Best AI Agents by a Factor of Two</h2>
+    <p class="modal-sub">A landmark report published in Nature delivers a sobering corrective: even the most sophisticated AI agents achieve only half the success rate of PhD-level researchers on complex scientific tasks.</p>
+    <hr class="modal-divider">
+    <div class="modal-body">
+      <p>The Stanford Institute for Human-Centered Artificial Intelligence's annual AI Index report, published this week in Nature, contains findings that cut against the prevailing narrative of imminent AI scientific supremacy. On a rigorous benchmark of complex, multi-step scientific tasks — the kind that characterise genuine research rather than standardised examination — the best available AI agents performed at approximately half the success rate of human scientists holding doctoral qualifications. The gap is not marginal. It is, the report's authors argue, indicative of fundamental architectural limitations in how current systems handle novelty, ambiguity and the iterative, hypothesis-driven character of genuine scientific inquiry.</p>
+      <p>The findings are likely to be received with mixed reactions across the research community. Those who have enthusiastically adopted AI tools — a substantial proportion, by the report's own accounting — may view the headline figure as underestimating the marginal value AI delivers even when it cannot fully replace human judgment. A system that performs at half the level of a PhD scientist in absolute terms may nonetheless dramatically accelerate a research programme when deployed as an auxiliary rather than a replacement. The more provocative concern the report raises is whether auxiliary deployment subtly narrows the range of scientific questions that get asked — optimising for problems AI can assist with, rather than those most worth solving.</p>
+      <p>What the data cannot easily capture is the distributional question: AI agents that perform, on average, at half the human rate may nonetheless match or exceed human performance on well-defined subsets of tasks — literature synthesis, data cleaning, hypothesis generation from large corpora — while failing dramatically on others requiring physical intuition, experimental improvisation or the creative leaps that define transformative science. The appropriate institutional response is not dismissal of AI's scientific utility, but a more nuanced taxonomy of where AI assistance is genuinely additive and where its apparent productivity masks a shallowing of ambition.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m5" onclick="if(event.target===this)closeModal('m5')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m5')">&times;</button>
+    <div class="modal-kicker">Venture Capital</div>
+    <h2 class="modal-title">AI Infrastructure Attracts $800 Million in a Single Week as Investors Double Down on the Industry's Backbone</h2>
+    <p class="modal-sub">ShengShu Technology's $293 million raise leads a cohort of rounds signalling that venture capital has pivoted from application-layer bets to chips, inference engines and data pipelines.</p>
+    <hr class="modal-divider">
+    <div class="modal-body">
+      <p>The week of May 5th, 2026 may come to be seen as an inflection point in the venture capital geography of artificial intelligence. A sequence of funding announcements — ShengShu Technology ($293 million for multimodal world-model AI), Rogo ($160 million Series D for AI-driven financial workflows), Hightouch ($150 million Series D for customer data infrastructure), Avoca ($125 million Series B for AI-powered customer support), and Parallel Web Systems ($100 million at a two-billion-dollar valuation for AI research and search APIs) — collectively represent a decisive statement about where sophisticated capital believes durable value will reside in the AI stack.</p>
+      <p>The pattern is not coincidental. Each of these companies operates at or near the infrastructure layer: the unglamorous but operationally critical components that make AI deployable at enterprise scale — data pipelines, inference optimisation, API distribution, workflow automation. This contrasts with the application-layer froth that characterised earlier phases of the AI boom, when consumer-facing products with minimal technical differentiation commanded extraordinary valuations. Investors appear to have concluded, firmly, that the application layer will be commoditised as models improve, and that infrastructure advantages — particularly those reducing inference cost or improving data integration — will prove more defensible.</p>
+      <p>The hardware dimension of this trend is equally notable. Tsavorite, an AI hardware startup developing what it calls an Omni Processing Unit integrating CPU, GPU and memory on a single chip, secured seed funding this week with a promise to reduce inference energy consumption by over ninety per cent. If that claim survives contact with production workloads, the implications for the economics of AI at scale are considerable. The energy cost of running large language models at enterprise scale has emerged as one of the binding constraints on deployment, and any credible solution commands premium attention from investors who understand that the next decade's AI landscape will be shaped as much by power bills as by benchmark scores.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+  function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { document.querySelectorAll('.modal-overlay.active').forEach(m => { m.classList.remove('active'); document.body.style.overflow = ''; }); } });
+</script>
+</body>
+</html>
